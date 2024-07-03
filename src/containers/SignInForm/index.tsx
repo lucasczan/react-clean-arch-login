@@ -1,5 +1,6 @@
 "use client";
 
+import { Input } from "@/components/Input/inde";
 import { useSignIn } from "./hooks/useSignIn";
 
 export function SignInForm() {
@@ -21,61 +22,32 @@ export function SignInForm() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" action="#" method="POST">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-                {errors?.email && (
-                  <span className="text-sm text-red-400">{errors.email}</span>
-                )}
-              </div>
+            <div className="mt-2">
+              <Input
+                label="Email address"
+                error={errors?.email}
+                id="email"
+                name="email"
+                type="email"
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                autoComplete="email"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
               <div className="mt-2">
-                <input
+                <Input
+                  label="Password"
                   id="password"
                   name="password"
                   type="password"
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
+                  error={errors.password}
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                {errors?.password && (
-                  <span className="text-sm text-red-400">
-                    {errors.password}
-                  </span>
-                )}
               </div>
             </div>
 

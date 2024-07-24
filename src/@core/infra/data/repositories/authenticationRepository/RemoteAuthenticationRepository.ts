@@ -1,9 +1,9 @@
 import { IHttpPostClient } from "@/@core/application/protocols/http/IHttpPostClient";
-import { IAccountModel } from "@/@core/domain/models/AccountModel";
+import { IAccountModel } from "@/@core/domain/models/IAccountModel";
 import {
   IAuthenticationRepository,
   authenticateParamsType,
-} from "@/@core/domain/repositories/authentication/AuthenticationRepository";
+} from "@/@core/domain/repositories/authentication/IAuthenticationRepository";
 
 export class RemoteAuthenticationRepository
   implements IAuthenticationRepository

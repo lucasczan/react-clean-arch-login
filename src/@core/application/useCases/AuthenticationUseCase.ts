@@ -1,9 +1,9 @@
-import { IAccountModel } from "@/@core/domain/models/AccountModel";
+import { IAccountModel } from "@/@core/domain/models/IAccountModel";
+import { IAuthentication } from "@/@core/domain/useCases/IAuthentication";
 import {
   IAuthenticationRepository,
   authenticateParamsType,
-} from "@/@core/domain/repositories/authentication/AuthenticationRepository";
-import { IAuthentication } from "@/@core/domain/useCases/Authentication";
+} from "@/@core/domain/repositories/authentication/IAuthenticationRepository";
 
 export class AuthenticationUseCase implements IAuthentication {
   constructor(private authenticationRepository: IAuthenticationRepository) {}

@@ -1,6 +1,7 @@
 import { AuthenticationUseCase } from "@/@core/application/useCases/AuthenticationUseCase";
 import { RemoteAuthenticationRepository } from "@/@core/infra/data/repositories/authenticationRepository/RemoteAuthenticationRepository";
 import { AxiosPostHttpClient } from "@/@core/infra/http/axiosHttpClient/AxiosPostHttpClient";
+import { YupAuthenticationValidator } from "@/@core/infra/validators/authenticationValidator/YupAuthenticationValidator";
 import { ZodAuthenticationValidator } from "@/@core/infra/validators/authenticationValidator/ZodAuthenticationValidator";
 import { useState } from "react";
 
@@ -20,9 +21,11 @@ export function useSignIn() {
   const [errors, setErrors] = useState<fields>({} as fields);
 
   const axiosHttpPostClient = new AxiosPostHttpClient();
+
   const authenticationRepository = new RemoteAuthenticationRepository(
     axiosHttpPostClient
   );
+
   const authenticationValidator = new ZodAuthenticationValidator();
 
   const authenticationUseCase = new AuthenticationUseCase(
@@ -38,10 +41,14 @@ export function useSignIn() {
     const hasErrors = errors.length > 0;
 
     if (hasErrors) {
-      const emailError = errors.find((field) => field.field === "email")?.error;
+      const emailError = errors.find(
+        (field) => field.field === "email"
+      )?.message;
+
       const passwordError = errors.find(
         (field) => field.field === "password"
-      )?.error;
+      )?.message;
+
       setErrors({
         email: emailError ?? "",
         password: passwordError ?? "",

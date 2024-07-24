@@ -1,18 +1,26 @@
 import { IAuthValidator } from "@/@core/application/protocols/validators/IAuthValidator";
+import { IValidationResponseError } from "@/@core/application/protocols/validators/IValidatorResponseError";
 import { z } from "zod";
 
-const authSchema = z.object({
-  email: z.string().email("Email inválido").min(1, "Campo obrigatório"),
-  password: z.string().min(6, "A senha deve conter pelo menos 6 caracteres"),
-});
+export class ZodAuthenticationValidator
+  implements IAuthValidator<IValidationResponseError[] | []>
+{
+  private schema: z.ZodSchema;
 
-export class ZodAuthenticationValidator implements IAuthValidator {
-  validate(params: {
-    email: string;
-    password: string;
-  }): { field: string; error: string }[] {
+  constructor() {
+    this.schema = z.object({
+      email: z
+        .string({ required_error: "Campo obrigatório" })
+        .min(1, "Campo obrigatório")
+        .email("Email inválido"),
+      password: z
+        .string({ required_error: "Campo obrigatório" })
+        .min(6, "A senha deve conter pelo menos 6 caracteres"),
+    });
+  }
+  validate(params: { email: string; password: string }) {
     try {
-      authSchema.parse({
+      this.schema.parse({
         email: params.email,
         password: params.password,
       });
@@ -21,11 +29,11 @@ export class ZodAuthenticationValidator implements IAuthValidator {
       if (error instanceof z.ZodError) {
         const errors = error.errors.map((err) => ({
           field: String(err.path[0]),
-          error: err.message,
+          message: err.message,
         }));
         return errors;
       }
-      return [];
+      return [{ field: "auth", message: "Erro ao autenticar" }];
     }
   }
 }

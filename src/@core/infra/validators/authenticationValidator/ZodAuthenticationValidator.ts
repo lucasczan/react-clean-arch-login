@@ -1,10 +1,7 @@
 import { IAuthValidator } from "@/@core/application/protocols/validators/IAuthValidator";
-import { IValidationResponseError } from "@/@core/application/protocols/validators/IValidatorResponseError";
 import { z } from "zod";
 
-export class ZodAuthenticationValidator
-  implements IAuthValidator<IValidationResponseError[] | []>
-{
+export class ZodAuthenticationValidator implements IAuthValidator {
   private schema: z.ZodSchema;
 
   constructor() {
@@ -18,6 +15,7 @@ export class ZodAuthenticationValidator
         .min(6, "A senha deve conter pelo menos 6 caracteres"),
     });
   }
+
   validate(params: { email: string; password: string }) {
     try {
       this.schema.parse({

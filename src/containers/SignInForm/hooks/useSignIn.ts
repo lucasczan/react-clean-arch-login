@@ -12,13 +12,13 @@ type fields = {
 };
 
 export function useSignIn() {
+  const [errors, setErrors] = useState<fields>({} as fields);
+
   const [form, setForm] = useState<fields>({
     email: "",
     password: "",
     auth: "",
   });
-
-  const [errors, setErrors] = useState<fields>({} as fields);
 
   const axiosHttpPostClient = new AxiosPostHttpClient();
 
@@ -64,7 +64,6 @@ export function useSignIn() {
     const hasErrors = validateFields();
 
     if (hasErrors) return;
-
     setErrors({} as fields);
 
     authenticationUseCase

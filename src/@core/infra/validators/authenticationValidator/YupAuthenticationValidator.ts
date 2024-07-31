@@ -1,10 +1,7 @@
 import { IAuthValidator } from "@/@core/application/protocols/validators/IAuthValidator";
-import { IValidationResponseError } from "@/@core/application/protocols/validators/IValidatorResponseError";
 import * as yup from "yup";
 
-export class YupAuthenticationValidator
-  implements IAuthValidator<Promise<IValidationResponseError[]> | []>
-{
+export class YupAuthenticationValidator implements IAuthValidator {
   private schema: yup.Schema;
 
   constructor() {
@@ -17,9 +14,9 @@ export class YupAuthenticationValidator
     });
   }
 
-  async validate(params: { email: string; password: string }) {
+  validate(params: { email: string; password: string }) {
     try {
-      await this.schema.validate(params, { abortEarly: false });
+      this.schema.validateSync(params, { abortEarly: false });
       return [];
     } catch (error) {
       if (error instanceof yup.ValidationError) {

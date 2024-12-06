@@ -1,9 +1,9 @@
-import { SignInForm } from "@/containers/SignInForm";
+import { SignInForm } from "@/presentation/containers/SignInForm";
 
 export default function Home() {
-  return (
-    <main>
-      <SignInForm />
-    </main>
-  );
+	return (
+		<main>
+			<SignInForm />
+		</main>
+	);
 }

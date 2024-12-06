@@ -1,49 +1,38 @@
 import { AppError } from "@/@core/domain/application/Errors/AppError";
 import { MakeAuthentication } from "@/@core/infra/factories/AuthenticationFactory";
-import { useState } from "react";
-
-type fields = {
-	email: string;
-	password: string;
-	auth: string;
-};
+import { useForm } from "react-hook-form";
 
 export function useSignIn() {
-	const [errors, setErrors] = useState<fields>({} as fields);
-
-	const [form, setForm] = useState<fields>({
-		email: "",
-		password: "",
-		auth: "",
+	const form = useForm({
+		defaultValues: {
+			email: "",
+			password: "",
+		},
 	});
 
-	const authentication = MakeAuthentication.make();
+	const authentication = MakeAuthentication();
 
-	const handleSubmit = async (e: any) => {
-		e.preventDefault();
+	const handleSubmit = form.handleSubmit(async ({ email, password }) => {
 		try {
 			const response = await authentication.execute({
-				email: form.email,
-				password: form.password,
+				email,
+				password,
 			});
 		} catch (error) {
 			if (error instanceof AppError) {
-				setErrors({
-					email:
+				form.setError("email", {
+					message:
 						error.errors.find((item) => item.field === "email")?.error ?? "",
-					password:
+				});
+				form.setError("password", {
+					message:
 						error.errors.find((item) => item.field === "password")?.error ?? "",
-					auth: "",
 				});
 			} else {
-				setErrors({
-					email: "",
-					password: "",
-					auth: "Erro de autenticação",
-				});
+				alert("Connection server error");
 			}
 		}
-	};
+	});
 
-	return { handleSubmit, errors, form, setForm };
+	return { handleSubmit, form };
 }
